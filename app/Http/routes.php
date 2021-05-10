@@ -14,7 +14,8 @@
 use App\Task;
 use Illuminate\Http\Request;
 
-Route::group(['middleware' => ['web']], function () {
+Route::group(['prefix' => 'quickstart', 'middleware' => ['web']], function () {
+    // Auth::routes();
     /**
      * Show Task Dashboard
      */
@@ -33,7 +34,7 @@ Route::group(['middleware' => ['web']], function () {
         ]);
 
         if ($validator->fails()) {
-            return redirect('/')
+            return redirect('/quickstart')
                 ->withInput()
                 ->withErrors($validator);
         }
@@ -42,8 +43,8 @@ Route::group(['middleware' => ['web']], function () {
         $task->name = $request->name;
         $task->save();
 
-        return redirect('/');
-    });
+        return redirect('/quickstart');
+    })->name( 'postTask' );
 
     /**
      * Delete Task
@@ -51,6 +52,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/task/{id}', function ($id) {
         Task::findOrFail($id)->delete();
 
-        return redirect('/');
-    });
+        return redirect('/quickstart');
+    })->name( 'deleteTask' );
 });
